@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="./favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="./favicon.png" sizes="512x512" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="像素無盡塔防：王國守望者 — 8-bit 無盡波次、塔覺醒、靈魂科技與成就系統" />
+  <meta name="author" content="ReiKama414" />
+  <meta name="theme-color" content="#06070d" />
+  <title>像素無盡塔防：王國守望者</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Full-Viewport Zero-Scroll 16-Bit Game Console Frame -->
+  <div class="h-dvh w-screen overflow-hidden flex flex-col justify-between p-1 sm:p-2 gap-1.5 select-none">
+
+    <!-- TOP ARCADE HUD BAR (2 Sleek Non-Wrapping Rows for Perfect Mobile/Desktop RWD) -->
+    <header class="pixel-box px-2.5 py-1.5 shrink-0 flex flex-col gap-1.5">
+      <!-- Row 1: Title & Live Arcade Counters -->
+      <div class="flex items-center justify-between gap-2 overflow-x-auto thin-scroll">
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="text-amber-400 font-bold text-xs sm:text-sm tracking-wider">🏰 像素守望者</span>
+          <div class="px-2 py-0.5 bg-black/70 border border-amber-500/70 text-amber-300 text-xs whitespace-nowrap">
+            GOLD <span id="hud-gold" class="font-bold">240</span>
+          </div>
+          <div class="px-2 py-0.5 bg-black/70 border border-purple-500/70 text-purple-300 text-xs whitespace-nowrap">
+            SOUL <span id="hud-gems" class="font-bold">8</span>
+          </div>
+          <div class="px-2 py-0.5 bg-black/70 border border-rose-500/70 text-rose-300 text-xs whitespace-nowrap">
+            HP <span id="hud-hp" class="font-bold">100/100</span>
+          </div>
+          <div class="px-2 py-0.5 bg-black/70 border border-cyan-500/70 text-cyan-300 text-xs whitespace-nowrap">
+            WAVE <span id="hud-wave" class="font-bold">1</span> <span class="text-[10px] text-slate-400">(BEST:<span id="hud-best">1</span>)</span>
+          </div>
+          <div class="px-2 py-0.5 bg-black/70 border border-orange-500/70 text-orange-300 text-xs whitespace-nowrap">
+            COMBO <span id="hud-combo" class="font-bold">0</span>
+          </div>
+        </div>
+
+        <!-- RPG Modal Tabs -->
+        <div class="flex items-center gap-1 shrink-0">
+          <button type="button" data-tab="tab-shop" class="tab-btn pixel-btn px-2 py-1 text-[11px] font-bold bg-amber-400 text-slate-950" aria-pressed="true" title="返回建造列">🗼 建造</button>
+          <button type="button" data-tab="tab-tech" class="tab-btn pixel-btn px-2 py-1 text-[11px] font-bold bg-slate-800 text-slate-200" aria-pressed="false" title="開啟靈魂科技樹">🔮 科技</button>
+          <button type="button" data-tab="tab-ach" class="tab-btn pixel-btn px-2 py-1 text-[11px] font-bold bg-slate-800 text-slate-200" aria-pressed="false" title="開啟成就勳章">🏆 成就</button>
+        </div>
+      </div>
+
+      <!-- Row 2: Compact System Toolbar -->
+      <div class="flex items-center justify-between gap-1.5 overflow-x-auto thin-scroll border-t border-slate-800 pt-1">
+        <div class="flex items-center gap-1 shrink-0">
+          <select id="map-select" class="bg-slate-900 border-2 border-slate-600 text-[11px] font-bold px-1.5 py-0.5 text-slate-100 cursor-pointer">
+            <option value="plains">🗺️ 蜿蜒翡翠平原</option>
+            <option value="crossroads">🌋 雙子星熔岩迷宮</option>
+            <option value="spiral">🌀 無盡虛空迴廊</option>
+          </select>
+          <button id="btn-speed" type="button" class="pixel-btn px-2 py-0.5 bg-indigo-700 text-[11px] font-bold text-white">⏩ 速度: 1x</button>
+          <button id="btn-auto-wave" type="button" class="pixel-btn px-2 py-0.5 bg-slate-800 text-[11px] font-bold text-slate-300">自動波次: 關閉</button>
+          <button id="btn-auto-up" type="button" class="pixel-btn px-2 py-0.5 bg-slate-800 text-[11px] font-bold text-slate-300">自動升塔: 關閉</button>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+          <button id="btn-pause" type="button" class="pixel-btn px-2 py-0.5 bg-slate-700 text-[11px] font-bold text-white">⏸️ 暫停</button>
+          <button id="btn-sfx" type="button" class="pixel-btn px-2 py-0.5 bg-slate-800 text-[11px] font-bold text-slate-200">🔊 音效: 開</button>
+          <button id="btn-bgm" type="button" class="pixel-btn px-2 py-0.5 bg-slate-800 text-[11px] font-bold text-slate-200">🎵 音樂: 關</button>
+          <button id="btn-restart" type="button" class="pixel-btn px-2 py-0.5 bg-rose-800 text-[11px] font-bold text-white">🔄 重開</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- CENTER BATTLEFIELD VIEWPORT (Auto-fits any screen aspect ratio) -->
+    <main id="canvas-container" class="flex-1 min-h-0 relative">
+      <canvas id="td-canvas" width="640" height="400"></canvas>
+      <div class="crt-overlay absolute inset-0"></div>
+
+      <!-- Contextual Tower Inspector Bar -->
+      <div class="absolute bottom-2 left-2 right-2 pointer-events-none flex justify-center">
+        <div id="inspector-empty" class="pixel-box px-3 py-1 bg-black/80 text-[11px] text-amber-300 pointer-events-auto">
+          <span id="selected-build-tip">建造模式：點擊空地部署防禦塔</span>
+        </div>
+
+        <div id="inspector-detail" class="hidden pixel-box px-3 py-2 bg-slate-950/95 pointer-events-auto flex flex-wrap items-center justify-between gap-2 w-full max-w-2xl">
+          <div class="flex flex-col gap-0.5">
+            <div class="flex items-center gap-2">
+              <span id="insp-name" class="font-bold text-sm text-amber-400">精靈神弓塔 LV.1</span>
+              <span class="text-[11px] text-slate-300">ATK:<b id="insp-dmg" class="text-white">18</b></span>
+              <span class="text-[11px] text-slate-300">SPD:<b id="insp-rate" class="text-white">2.2/s</b></span>
+              <span class="text-[11px] text-slate-300">CRIT:<b id="insp-crit" class="text-amber-300">22%</b></span>
+              <span class="text-[11px] text-slate-400">總傷:<b id="insp-total-dmg" class="text-emerald-300">0</b></span>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <span id="insp-evo5" class="text-[11px] text-slate-400"></span>
+              <span id="insp-evo10" class="text-[11px] text-slate-400"></span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button id="btn-upgrade-tower" type="button" class="pixel-btn px-3 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs">
+              ⬆️ 強化升級
+            </button>
+            <button id="btn-sell-tower" type="button" class="pixel-btn px-2.5 py-1 bg-rose-800 hover:bg-rose-700 text-white font-bold text-xs">
+              ♻️ 回收
+            </button>
+            <button id="btn-deselect-tower" type="button" class="pixel-btn px-2 py-1 bg-slate-800 text-slate-300 text-xs">
+              ✕ 關閉
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- BOTTOM ARCADE DOCK: Towers + Active Skills + Wave Trigger -->
+    <footer class="pixel-box p-1.5 sm:p-2 shrink-0 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-1.5">
+      <!-- 5 Pixel Tower Cards (Single Horizontal Scroll Row) -->
+      <div id="tab-shop" class="flex-1 min-w-0 overflow-x-auto thin-scroll">
+        <div id="tower-shop-list" class="flex items-center gap-1.5"></div>
+      </div>
+
+      <!-- Commander Active Skills & Next Wave Button -->
+      <div class="flex items-center justify-between lg:justify-end gap-1.5 shrink-0 overflow-x-auto thin-scroll border-t lg:border-t-0 lg:border-l-2 border-slate-700 pt-1 lg:pt-0 lg:pl-2">
+        <div class="flex items-center gap-1 shrink-0">
+          <button id="skill-meteor" type="button" class="pixel-btn px-2.5 py-1.5 bg-orange-700 hover:bg-orange-600 text-xs font-bold text-white flex items-center gap-1">
+            <span>☄️ [Q] 流星火雨</span>
+            <span class="skill-cd px-1 bg-black/50 text-[10px] text-amber-200">就緒</span>
+          </button>
+          <button id="skill-frenzy" type="button" class="pixel-btn px-2.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-xs font-bold text-slate-950 flex items-center gap-1">
+            <span>🔥 [W] 全軍狂暴</span>
+            <span class="skill-cd px-1 bg-black/40 text-[10px] text-white">就緒</span>
+          </button>
+          <button id="skill-freeze" type="button" class="pixel-btn px-2.5 py-1.5 bg-cyan-700 hover:bg-cyan-600 text-xs font-bold text-white flex items-center gap-1">
+            <span>❄️ [E] 時間凍結</span>
+            <span class="skill-cd px-1 bg-black/50 text-[10px] text-cyan-200">就緒</span>
+          </button>
+        </div>
+        <button id="btn-next-wave" type="button" class="pixel-btn px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-xs sm:text-sm font-bold text-white shrink-0">
+          ▶️ 立即迎戰第 1 波
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- RPG Modal Overlay for Soul Tech Tree & Achievements -->
+  <div id="rpg-drawer-modal" class="hidden fixed inset-0 z-40 bg-black/75 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <div id="rpg-drawer-panel" class="pixel-box max-w-lg w-full p-4 bg-slate-950 space-y-3">
+      <div class="flex items-center justify-between border-b-2 border-slate-700 pb-2">
+        <span id="drawer-title" class="font-bold text-sm text-amber-400">🔮 王國聖殿 — 靈魂科技與成就勳章</span>
+        <button id="btn-close-drawer" type="button" class="pixel-btn px-2.5 py-1 bg-rose-800 text-xs font-bold text-white" aria-label="關閉面板">✕ 返回戰場</button>
+      </div>
+
+      <div id="tab-tech" class="tab-panel space-y-2">
+        <p class="text-xs text-purple-200 bg-purple-950/60 border border-purple-600 p-2">
+          💎 <strong>靈魂結晶永久強化</strong>：升級後跨局永久保留，助你突破無盡波次！
+        </p>
+        <div id="tech-list" class="space-y-2 max-h-[55vh] overflow-y-auto thin-scroll pr-1"></div>
+      </div>
+
+      <div id="tab-ach" class="tab-panel hidden space-y-2">
+        <p class="text-xs text-amber-200 bg-amber-950/50 border border-amber-600 p-2">
+          🏆 <strong>王國榮譽勳章</strong>：達成條件自動發放 💎靈魂結晶！
+        </p>
+        <div id="ach-list" class="space-y-2 max-h-[55vh] overflow-y-auto thin-scroll pr-1"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast-banner" style="opacity:0; transform:translateY(-8px); pointer-events:none;"></div>
+
+  <!-- Welcome / Start Screen Modal (Prevents sudden start anxiety) -->
+  <div id="start-screen-modal" class="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+    <div class="pixel-box max-w-md w-full p-5 text-center space-y-4 border-amber-400 bg-slate-950">
+      <div class="inline-block px-3 py-1 bg-amber-500/20 border border-amber-400 text-amber-300 text-xs font-bold">
+        16-BIT PIXEL ENDLESS TOWER DEFENSE
+      </div>
+      <h1 class="text-xl sm:text-2xl font-bold text-amber-400 tracking-wider">🏰 像素守望者：無盡王國</h1>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        別緊張！進入戰場後為<strong class="text-emerald-400">「不限時戰前佈陣階段」</strong>，魔物絕不會自動偷襲！
+      </p>
+      <div class="text-left text-xs bg-slate-900/90 p-3 border-2 border-slate-700 space-y-1.5 text-slate-200">
+        <div>🛡️ <strong class="text-amber-300">安心佈陣</strong>：開戰前可慢慢挑選防禦塔，蓋錯拆除享 <span class="text-emerald-400 font-bold">100% 全額退費</span>！</div>
+        <div>▶️ <strong class="text-cyan-300">手動出擊</strong>：預設關閉自動波次，等你準備好按下右下角<span class="text-emerald-400 font-bold">【▶️ 立即迎戰】</span>才會出怪</div>
+        <div>💎 <strong class="text-purple-300">無限成長</strong>：擊敗魔物與首領可獲得金幣與靈魂結晶，隨時強化 Lv.5 / Lv.10 覺醒神塔！</div>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="text-xs text-slate-400 flex items-center justify-center gap-2">
+          <span>選擇戰場地圖：</span>
+          <select id="start-map-select" class="bg-slate-900 border-2 border-slate-600 text-xs font-bold px-2 py-1 text-amber-300 cursor-pointer">
+            <option value="plains">🗺️ 蜿蜒翡翠平原 (推薦新手)</option>
+            <option value="crossroads">🌋 雙子星熔岩迷宮</option>
+            <option value="spiral">🌀 無盡虛空迴廊</option>
+          </select>
+        </label>
+        <button id="btn-start-game" type="button" class="pixel-btn w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm tracking-wider">
+          🎮 進入戰場開始佈陣 (START)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div id="gameover-modal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+    <div class="pixel-box max-w-md w-full p-5 text-center space-y-4 border-amber-400">
+      <div class="text-3xl">💀 GAME OVER</div>
+      <h2 class="text-lg font-bold text-amber-400">王國防線失守！戰役結算</h2>
+      <p class="text-xs text-slate-300">你的「💎靈魂結晶」與「🔮永久科技」已全數保留，強化後再次挑戰無盡極限！</p>
+      <div class="grid grid-cols-2 gap-2 text-xs bg-slate-900 p-3 border-2 border-slate-700">
+        <div>🌊 本局波次：<span id="go-wave" class="font-bold text-cyan-400">1</span></div>
+        <div>🏆 最高紀錄：<span id="go-best" class="font-bold text-amber-400">1</span></div>
+        <div>💀 擊殺總數：<span id="go-kills" class="font-bold text-emerald-400">0</span></div>
+        <div>💥 累積傷害：<span id="go-dmg" class="font-bold text-rose-400">0</span></div>
+      </div>
+      <button id="btn-modal-restart" type="button" class="pixel-btn w-full py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-sm">
+        🔄 帶著永久科技重新出擊！
+      </button>
+    </div>
+  </div>
+
+  <script src="js/sprites.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

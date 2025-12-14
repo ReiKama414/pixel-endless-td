@@ -1,0 +1,189 @@
+/* 像素無盡塔防 - Authentic 16-Bit Pixel Arcade UI & Zero-Scroll RWD */
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap');
+
+:root {
+  --bg-abyss: #06070d;
+  --bg-frame: #131626;
+  --bg-slot: #1c2138;
+  --bg-slot-hover: #283052;
+  --border-mid: #4a5580;
+  --gold: #ffd700;
+  --gem: #d946ef;
+  --hp: #ff2a55;
+  --emerald: #10b981;
+  --cyan: #00f0ff;
+  --font-pixel: 'DotGothic16', 'Press Start 2P', 'Silkscreen', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+  border-radius: 0 !important;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--bg-abyss);
+  color: #f8fafc;
+  font-family: var(--font-pixel);
+  letter-spacing: 0.5px;
+  text-shadow: 2px 2px 0px #000000;
+}
+
+/* RPG Double Stepped Pixel Frame */
+.pixel-box {
+  background-color: var(--bg-frame);
+  border: 2px solid var(--border-mid);
+  box-shadow:
+    inset 2px 2px 0px rgba(255, 255, 255, 0.14),
+    inset -2px -2px 0px rgba(0, 0, 0, 0.7),
+    0 0 0 2px #000000;
+}
+
+/* Arcade Slot / Tower Card */
+.pixel-card {
+  background-color: var(--bg-slot);
+  border: 2px solid #3b4366;
+  box-shadow:
+    inset 2px 2px 0px rgba(255, 255, 255, 0.1),
+    inset -2px -2px 0px rgba(0, 0, 0, 0.65),
+    0 2px 0 0 #000000;
+  transition: transform 0.05s steps(2), border-color 0.05s steps(2), background-color 0.05s steps(2);
+  cursor: pointer;
+}
+
+.pixel-card:hover:not(:disabled) {
+  background-color: var(--bg-slot-hover);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.pixel-card:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.pixel-card.selected {
+  background-color: #2c355c;
+  border-color: var(--gold);
+  box-shadow:
+    inset 0 0 0 2px var(--gold),
+    0 0 10px rgba(255, 215, 0, 0.45),
+    0 2px 0 0 #000000;
+}
+
+/* Chunky 8-Bit Arcade Button */
+.pixel-btn {
+  font-family: var(--font-pixel);
+  text-shadow: 1px 1px 0px #000000;
+  border: 2px solid #000000;
+  box-shadow:
+    inset 2px 2px 0px rgba(255, 255, 255, 0.28),
+    inset -2px -2px 0px rgba(0, 0, 0, 0.5),
+    0 3px 0px #000000;
+  transition: transform 0.04s steps(1), filter 0.05s steps(1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pixel-btn:hover:not(:disabled) {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.pixel-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow:
+    inset 2px 2px 0px rgba(0, 0, 0, 0.55),
+    0 1px 0px #000000;
+}
+
+.pixel-btn:disabled {
+  opacity: 0.42;
+  filter: grayscale(0.6);
+  cursor: not-allowed;
+}
+
+.pixel-btn:focus-visible,
+.pixel-card:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-btn,
+  .pixel-card {
+    transition: none;
+  }
+
+  .crt-overlay {
+    display: none;
+  }
+}
+
+/* Responsive Pixel Canvas Stage */
+#canvas-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at center, #161b30 0%, #06070d 100%);
+  overflow: hidden;
+  padding: 4px;
+}
+
+#td-canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  border: 3px solid #4a5580;
+  box-shadow: 0 0 0 3px #000000, 0 10px 30px rgba(0, 0, 0, 0.9);
+  touch-action: none;
+}
+
+.tower-icon-canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Retro CRT Scanline Overlay */
+.crt-overlay {
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.22) 50%
+  );
+  background-size: 100% 4px;
+}
+
+/* Compact Horizontal Scrollbars */
+.thin-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.thin-scroll::-webkit-scrollbar-track {
+  background: #090b14;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: #4a5580;
+}
+.thin-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
